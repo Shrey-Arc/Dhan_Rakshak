@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+
+  /* Color Palette */
+  --color-background: 0 0% 100%;
+  --color-foreground: 225 10% 15%;
+  --color-primary: 210 100% 50%;
+  --color-primary-foreground: 0 0% 100%;
+  --color-secondary: 225 12% 92%;
+  --color-secondary-foreground: 225 10% 15%;
+  --color-accent: 14 100% 50%;
+  --color-accent-foreground: 0 0% 100%;
+  --color-muted: 225 8% 88%;
+  --color-muted-foreground: 225 8% 40%;
+  --color-border: 225 8% 92%;
+  --color-input: 225 8% 96%;
+  --color-success: 142 72% 29%;
+
+  /* Radius */
+  --radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: 225 10% 8%;
+    --color-foreground: 0 0% 98%;
+    --color-primary: 210 100% 50%;
+    --color-primary-foreground: 225 10% 8%;
+    --color-secondary: 225 15% 20%;
+    --color-secondary-foreground: 0 0% 98%;
+    --color-accent: 14 100% 50%;
+    --color-accent-foreground: 225 10% 8%;
+    --color-muted: 225 10% 25%;
+    --color-muted-foreground: 225 8% 70%;
+    --color-border: 225 12% 22%;
+    --color-input: 225 12% 18%;
+    --color-success: 142 72% 45%;
+  }
+}
+
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-feature-settings: 'rounding' 1;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+/* Custom utilities */
+@layer components {
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 md:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:opacity-90 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg bg-secondary px-6 py-3 font-medium text-secondary-foreground transition-all hover:bg-muted active:scale-95;
+  }
+
+  .card-shadow {
+    @apply shadow-sm transition-shadow hover:shadow-md;
+  }
+}
