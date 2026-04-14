@@ -1,12 +1,12 @@
 'use client'
 
-import { Zap, Target, MapPin, AlertCircle } from 'lucide-react'
+import { FileText, TrendingUp, MapPin, AlertCircle } from 'lucide-react'
 import ServiceCard from './ServiceCard'
 
 export default function ServicesGrid() {
   const services = [
     {
-      icon: <Zap className="h-8 w-8" strokeWidth={1.5} />,
+      icon: <FileText className="h-8 w-8" strokeWidth={1.5} />,
       title: 'Tax Help',
       description:
         'Personalized tax guidance, ITR filing assistance, and deduction planning powered by AI.',
@@ -14,7 +14,7 @@ export default function ServicesGrid() {
       cta: 'Get Tax Help',
     },
     {
-      icon: <Target className="h-8 w-8" strokeWidth={1.5} />,
+      icon: <TrendingUp className="h-8 w-8" strokeWidth={1.5} />,
       title: 'Scheme Matching',
       description:
         'Discover government schemes and subsidies you&apos;re eligible for based on your profile.',
