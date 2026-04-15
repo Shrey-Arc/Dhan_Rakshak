@@ -200,25 +200,25 @@ h3 {
 
 /* Color Utilities */
 .text-navy {
-  @apply text-navy;
+  color: hsl(var(--color-navy));
 }
 
 .text-primary {
-  @apply text-primary;
+  color: hsl(var(--color-primary));
 }
 
 .text-gray-text {
-  @apply text-gray-text;
+  color: hsl(var(--color-gray-text));
 }
 
 .bg-primary {
-  @apply bg-primary;
+  background-color: hsl(var(--color-primary));
 }
 
 .bg-gray-light {
-  @apply bg-gray-light;
+  background-color: hsl(var(--color-gray-light));
 }
 
 .border-gray-border {
-  @apply border-gray-border;
+  border-color: hsl(var(--color-gray-border));
 }
