@@ -1,5 +1,6 @@
 import Header from '@/components/Header'
 import SearchHero from '@/components/SearchHero'
+import FeaturedTaxCard from '@/components/FeaturedTaxCard'
 import ServicesGrid from '@/components/ServicesGrid'
 import Spotlight from '@/components/Spotlight'
 import FAQ from '@/components/FAQ'
@@ -11,6 +12,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <SearchHero />
+        <FeaturedTaxCard />
         <ServicesGrid />
         <Spotlight />
         <FAQ />
