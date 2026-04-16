@@ -10,95 +10,105 @@ interface FAQItem {
 }
 
 export default function FAQ() {
-  const [openId, setOpenId] = useState<string | null>('faq-1')
+  const [openId, setOpenId] = useState<string | null>(null)
 
   const faqs: FAQItem[] = [
     {
       id: 'faq-1',
       question: 'How do I get started with DhanRakshak?',
       answer:
-        'Simply create an account using your phone number or email. Our AI will guide you through a quick profile setup to understand your financial situation, and then we&apos;ll provide personalized recommendations.',
+        'Simply create an account using your phone number. Our AI will guide you through a quick profile setup to understand your financial situation, and then provide personalized recommendations for taxes, schemes, and financial services.',
     },
     {
       id: 'faq-2',
-      question: 'Is my financial information secure?',
+      question: 'Is my financial information secure and private?',
       answer:
-        'Yes, we use enterprise-grade encryption and comply with all Indian financial data protection regulations. Your data is never shared with third parties without your explicit consent.',
+        'Yes, we use bank-grade encryption and comply with all Indian data protection regulations. Your financial data is encrypted end-to-end and never shared with third parties without your explicit consent.',
     },
     {
       id: 'faq-3',
       question: 'Can I file my income tax return through DhanRakshak?',
       answer:
-        'We provide comprehensive guidance for ITR filing with personalized recommendations. You can file directly or download the forms to file through the official income tax portal.',
+        'We provide comprehensive ITR guidance with AI-powered recommendations. You can download forms or file directly through the official income tax portal with our step-by-step assistance.',
     },
     {
       id: 'faq-4',
       question: 'How do I find nearby CSCs and banks?',
       answer:
-        'Use our CSC Finder feature to search by location. We&apos;ll show you nearby centers with their working hours, services offered, and directions using integrated maps.',
+        'Use our CSC Finder feature to search by location. We show nearby centers with working hours, available services, ratings, and integrated directions using Google Maps.',
     },
     {
       id: 'faq-5',
       question: 'What government schemes am I eligible for?',
       answer:
-        'Our Scheme Matching tool analyzes your profile and automatically identifies all schemes you may qualify for. We filter by your state, income level, profession, and other relevant factors.',
+        'Our Scheme Matcher analyzes your profile automatically and identifies all schemes you qualify for based on income, state, profession, and other relevant eligibility criteria.',
     },
     {
       id: 'faq-6',
-      question: 'Is there customer support available?',
+      question: 'Is there 24/7 customer support available?',
       answer:
-        'Yes, we offer 24/7 AI-powered support in multiple languages. You can also reach our team via WhatsApp, email, or phone for complex issues.',
+        'Yes, we offer 24/7 AI-powered support in multiple languages. For complex issues, reach our human team via WhatsApp, email, or phone support.',
     },
   ]
 
   return (
-    <section className="py-12 md:py-20">
+    <section className="section-padding bg-white">
       <div className="container-custom">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Section Header */}
           <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-3">
               Frequently Asked Questions
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Find answers to common questions about our services and how to use them.
+            <p className="text-gray-text text-base md:text-lg">
+              Get answers to common questions about DhanRakshak services.
             </p>
           </div>
 
           {/* FAQ Accordion */}
-          <div className="space-y-3">
+          <div className="space-y-3 border border-gray-border rounded-2xl overflow-hidden divide-y divide-gray-border bg-white shadow-base">
             {faqs.map((faq) => (
-              <div
-                key={faq.id}
-                className="border border-border rounded-lg overflow-hidden transition-all"
-              >
+              <div key={faq.id}>
                 <button
                   onClick={() =>
                     setOpenId(openId === faq.id ? null : faq.id)
                   }
-                  className="w-full px-4 md:px-6 py-4 md:py-5 flex items-center justify-between bg-background hover:bg-secondary/50 transition-colors text-left"
+                  className="w-full px-6 py-5 flex items-center justify-between hover:bg-gray-light transition-colors text-left group"
                   aria-expanded={openId === faq.id}
                 >
-                  <span className="font-semibold text-foreground text-base md:text-lg">
+                  <span className="font-semibold text-navy text-base md:text-lg group-hover:text-primary transition-colors">
                     {faq.question}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 text-muted-foreground flex-shrink-0 transition-transform ${
-                      openId === faq.id ? 'rotate-180' : ''
+                    className={`h-5 w-5 text-gray-text flex-shrink-0 transition-all duration-300 group-hover:text-navy ${
+                      openId === faq.id ? 'rotate-180 text-primary' : ''
                     }`}
                     strokeWidth={2}
                   />
                 </button>
 
                 {openId === faq.id && (
-                  <div className="px-4 md:px-6 py-4 md:py-5 bg-secondary/30 border-t border-border">
-                    <p className="text-foreground text-sm md:text-base leading-relaxed">
+                  <div className="px-6 py-5 bg-gray-light border-t border-gray-border animate-fade-in-up">
+                    <p className="text-navy text-sm md:text-base leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
                 )}
               </div>
             ))}
+          </div>
+
+          {/* Footer CTA */}
+          <div className="mt-12 p-6 md:p-8 bg-gray-light rounded-2xl border border-gray-border text-center">
+            <h3 className="text-lg font-semibold text-navy mb-2">
+              Still have questions?
+            </h3>
+            <p className="text-gray-text mb-4">
+              Our AI assistant is available 24/7 to help you with any queries.
+            </p>
+            <button className="btn btn-primary">
+              Chat with Support
+            </button>
           </div>
         </div>
       </div>

@@ -1,122 +1,155 @@
 'use client'
 
-import { ChevronRight } from 'lucide-react'
+import { Pause, Play } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 interface NewsItem {
   id: number
   title: string
-  description: string
-  date: string
-  category: string
+  source: string
+  time: string
+  tag: string
 }
 
 export default function Spotlight() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [autoScroll, setAutoScroll] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
 
   const news: NewsItem[] = [
     {
       id: 1,
-      title: 'PM-KISAN 17th Installment Released',
-      description:
-        'Check your account for the latest PM-KISAN subsidy payment. Over 11 crore farmers benefited.',
-      date: 'April 10, 2024',
-      category: 'Subsidy',
+      title: 'PM-KISAN 17th Installment Released - Check Your Account',
+      source: 'PIB',
+      time: '2 hours ago',
+      tag: 'Government Alert',
     },
     {
       id: 2,
-      title: 'New ITR Rules for FY 2024-25',
-      description:
-        'Important changes to income tax filing. Understand the new categories and exemptions.',
-      date: 'April 8, 2024',
-      category: 'Tax',
+      title: 'New ITR Rules for FY 2024-25 - Key Changes Explained',
+      source: 'Income Tax Dept',
+      time: '1 day ago',
+      tag: 'Tax Update',
     },
     {
       id: 3,
-      title: 'Bank Interest Rate Update',
-      description:
-        'RBI announces new lending rates. Check how this affects your home and personal loans.',
-      date: 'April 5, 2024',
-      category: 'Banking',
+      title: 'RBI Announces New Lending Rates - How It Affects Your Loans',
+      source: 'RBI Official',
+      time: '3 days ago',
+      tag: 'Banking News',
     },
     {
       id: 4,
-      title: 'Digital Payment Scheme Extended',
-      description:
-        'Government extends digital transaction incentives for farmers. Apply now through your CSC.',
-      date: 'April 1, 2024',
-      category: 'Digital',
+      title: 'Digital Payment Scheme Extended for Rural Communities',
+      source: 'Ministry of Finance',
+      time: '1 week ago',
+      tag: 'Scheme Update',
     },
   ]
 
   useEffect(() => {
-    if (!autoScroll) return
+    if (!isPlaying || isHovered) return
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % news.length)
-    }, 5000)
+    }, 4000)
 
     return () => clearInterval(timer)
-  }, [autoScroll, news.length])
+  }, [isPlaying, isHovered, news.length])
 
   return (
-    <section className="py-12 md:py-20 bg-secondary/30">
+    <section className="section-padding bg-gray-light">
       <div className="container-custom">
         {/* Section Header */}
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-          Spotlight
-        </h2>
-
-        {/* News Feed */}
-        <div className="space-y-3">
-          {news.map((item, index) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                setCurrentIndex(index)
-                setAutoScroll(false)
-              }}
-              className={`w-full text-left p-4 md:p-6 rounded-lg border transition-all ${
-                index === currentIndex
-                  ? 'border-primary bg-background shadow-md'
-                  : 'border-border bg-background/50 hover:border-muted'
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-block px-2 py-1 text-xs font-medium rounded-md bg-accent/10 text-accent">
-                      {item.category}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {item.date}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-1">
-                    {item.title}
-                  </h3>
-                  {index === currentIndex && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-                <ChevronRight
-                  className={`h-5 w-5 text-muted-foreground flex-shrink-0 transition-transform ${
-                    index === currentIndex ? 'text-primary' : ''
-                  }`}
-                  strokeWidth={2}
-                />
-              </div>
-            </button>
-          ))}
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-2">
+              Spotlight
+            </h2>
+            <p className="text-gray-text text-sm">Latest government updates & financial news</p>
+          </div>
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-border hover:bg-white transition-colors"
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+          >
+            {isPlaying ? (
+              <>
+                <Pause className="h-4 w-4 text-navy" strokeWidth={2} />
+                <span className="text-sm font-medium text-navy">Pause</span>
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4 text-navy" strokeWidth={2} />
+                <span className="text-sm font-medium text-navy">Play</span>
+              </>
+            )}
+          </button>
         </div>
 
-        {/* Auto-scroll Info */}
-        <p className="text-xs text-muted-foreground mt-4">
-          Click to pause auto-scroll
-        </p>
+        {/* News Carousel */}
+        <div
+          className="relative"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div className="overflow-hidden bg-white rounded-2xl border border-gray-border shadow-base">
+            <div className="relative h-32 md:h-40">
+              {/* News Items */}
+              {news.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`absolute inset-0 p-6 md:p-8 transition-all duration-500 ${
+                    index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                  }`}
+                >
+                  {/* Tag */}
+                  <div className="inline-block mb-3">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                      {item.tag}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg md:text-xl font-semibold text-navy mb-3 line-clamp-2">
+                    {item.title}
+                  </h3>
+
+                  {/* Meta */}
+                  <div className="flex items-center gap-4 text-xs text-gray-text">
+                    <span>{item.source}</span>
+                    <span>•</span>
+                    <span>{item.time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Indicators */}
+            <div className="flex items-center justify-between px-6 md:px-8 py-4 border-t border-gray-border bg-gray-light/50">
+              <div className="flex gap-2">
+                {news.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setCurrentIndex(index)
+                      setIsPlaying(false)
+                    }}
+                    className={`h-2 rounded-full transition-all ${
+                      index === currentIndex
+                        ? 'w-8 bg-primary'
+                        : 'w-2 bg-gray-border hover:bg-gray-text'
+                    }`}
+                    aria-label={`Go to news item ${index + 1}`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs font-medium text-gray-text">
+                {currentIndex + 1} / {news.length}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
