@@ -54,21 +54,7 @@ export default function HeroSection() {
                 className="h-full flex-1 border-none bg-transparent px-3 text-sm text-navy focus:outline-none md:text-base"
                 aria-label="Ask DhanRakshak AI"
               />
-              <button
-                onClick={async () => {
-                  if (!searchValue.trim()) return
-                  try {
-                    setLoading(true)
-                    const data = await api.queryAI(searchValue)
-                    setAiResponse(data.answer)
-                  } catch {
-                    setAiResponse('AI backend unavailable. Please try again shortly.')
-                  } finally {
-                    setLoading(false)
-                  }
-                }}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-dark md:px-5"
-              >
+              <button className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-dark md:px-5">
                 <Sparkles className="h-4 w-4" /> Ask AI
               </button>
             </div>
@@ -78,11 +64,6 @@ export default function HeroSection() {
             Try: <span className="font-medium">{hints[hintIndex]}</span>
             <span className="ml-1 inline-block h-4 w-0.5 animate-pulse bg-white/90 align-middle" />
           </p>
-          {(loading || aiResponse) && (
-            <p className="mt-3 rounded-lg bg-white/15 px-4 py-2 text-left text-sm text-white/95">
-              {loading ? 'Thinking…' : aiResponse}
-            </p>
-          )}
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm">

@@ -46,14 +46,6 @@ export default function GrievancePage() {
     }
   ]
 
-  const [myGrievances, setMyGrievances] = useState<GrievanceItem[]>([])
-
-  useEffect(() => {
-    api.getGrievances().then((res) => setMyGrievances(res.items)).catch(() => {
-      setMyGrievances(localGrievances)
-    })
-  }, [])
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'In Progress':
