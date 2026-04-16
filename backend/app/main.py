@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .core.config import settings
 from .core.database import Base, SessionLocal, engine
+from . import models  # noqa: F401 - ensure ORM models are registered on Base.metadata
 from .middleware.audit import AuditMiddleware
 from .middleware.rate_limit import RateLimitMiddleware
 from .routers import auth, ai, tax, schemes, locations, grievances, content, contact
@@ -32,6 +33,9 @@ app.include_router(locations.router, prefix='/api/v1/locations', tags=['location
 app.include_router(grievances.router, prefix='/api/v1/grievances', tags=['grievances'])
 app.include_router(content.router, prefix='/api/v1/content', tags=['content'])
 app.include_router(contact.router, prefix='/api/v1/contact', tags=['contact'])
+
+# Ensure tables exist when module is imported (covers test clients that skip lifespan events)
+Base.metadata.create_all(bind=engine)
 
 
 @app.on_event('startup')

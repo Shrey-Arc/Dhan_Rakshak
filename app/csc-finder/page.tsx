@@ -10,7 +10,7 @@ export default function CSCFinderPage() {
   const [searchLocation, setSearchLocation] = useState('')
   const [selectedType, setSelectedType] = useState('all')
 
-  const localCenters = [
+  const localCenters: Array<Omit<LocationItem, 'id'> & { id: number }> = [
     {
       id: 1,
       name: 'Ram Nagar CSC',

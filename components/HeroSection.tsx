@@ -2,7 +2,6 @@
 
 import { Search, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { api } from '@/lib/api'
 
 const hints = [
   'How do I file my income tax?',
@@ -13,8 +12,6 @@ const hints = [
 export default function HeroSection() {
   const [searchValue, setSearchValue] = useState('')
   const [hintIndex, setHintIndex] = useState(0)
-  const [aiResponse, setAiResponse] = useState('')
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {

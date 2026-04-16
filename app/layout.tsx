@@ -1,50 +1,21 @@
-import type { Metadata, Viewport } from 'next'
+import type { Metadata } from 'next'
 import './globals.css'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { AppNavbar } from '@/components/AppNavbar'
 
 export const metadata: Metadata = {
-  title: 'DhanRakshak - Your AI Financial Guardian',
-  description:
-    'Your AI Financial Guardian. Get expert guidance on taxes, discover government schemes, find CSCs, and track grievances. Trusted by rural communities.',
-  keywords: [
-    'tax help',
-    'income tax',
-    'government schemes',
-    'subsidies',
-    'CSC finder',
-    'grievance',
-    'financial guidance',
-    'rural India',
-    'AI financial assistant',
-  ],
-  openGraph: {
-    title: 'DhanRakshak - Your AI Financial Guardian',
-    description:
-      'Get expert guidance on taxes, schemes, and financial services.',
-    type: 'website',
-  },
+  title: 'DhanRakshak – AI Financial Guardian',
+  description: 'Premium fintech UI for AI tax help, subsidy discovery, nearby services, and grievance tracking.',
 }
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  themeColor: '#00B386',
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="bg-white dark:bg-slate-950" suppressHydrationWarning data-scroll-behavior="smooth">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <body className="antialiased font-sans text-navy bg-white dark:bg-slate-950 dark:text-gray-200">
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          <AppNavbar />
+          <main className="app-shell">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   )
