@@ -2,7 +2,7 @@
 
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
-import { MapPin, Clock, Phone, DollarSign, ArrowRight } from 'lucide-react'
+import { MapPin, Clock, Phone } from 'lucide-react'
 import { useState } from 'react'
 
 export default function CSCFinderPage() {

@@ -3,7 +3,6 @@
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { TrendingUp, Zap, Target, Users, Award, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
 import { useState } from 'react'
 
 export default function SchemesPage() {
