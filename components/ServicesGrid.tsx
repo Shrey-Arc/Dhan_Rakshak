@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { FileText, TrendingUp, MapPin, AlertCircle, ArrowRight } from 'lucide-react'
 
 export default function ServicesGrid() {
@@ -10,6 +11,7 @@ export default function ServicesGrid() {
       description: 'AI-powered tax guidance, ITR filing, deduction planning & compliance tips.',
       badges: ['Personalized', 'AI-Powered', 'Secure'],
       cta: 'Explore Now',
+      link: '/tax-help',
       color: 'primary',
     },
     {
@@ -17,6 +19,7 @@ export default function ServicesGrid() {
       title: 'Scheme Matching',
       description: 'Discover government schemes & subsidies you&apos;re eligible for instantly.',
       cta: 'Find Schemes',
+      link: '/schemes',
       color: 'blue',
     },
     {
@@ -24,6 +27,7 @@ export default function ServicesGrid() {
       title: 'CSC Finder',
       description: 'Locate nearby Common Service Centres & banks for offline transactions.',
       cta: 'Find Location',
+      link: '/csc-finder',
       color: 'orange',
     },
     {
@@ -31,51 +35,39 @@ export default function ServicesGrid() {
       title: 'Log Grievance',
       description: 'Report issues, track complaints & get transparent status updates.',
       cta: 'Report Now',
+      link: '/grievance',
       color: 'red',
     },
   ]
 
-  const colorMap = {
-    primary: { bg: 'bg-primary/5', text: 'text-primary', icon: 'text-primary' },
-    blue: { bg: 'bg-blue/5', text: 'text-blue', icon: 'text-blue' },
-    orange: { bg: 'bg-orange/5', text: 'text-orange', icon: 'text-orange' },
-    red: { bg: 'bg-red/5', text: 'text-red', icon: 'text-red' },
-  }
-
   return (
-    <section className="section-padding bg-white">
-      <div className="container-custom">
+    <section className="py-16 md:py-24 px-4 md:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-950">
+      <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-navy mb-3">
+        <div className="mb-12 space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white">
             Our Services
           </h2>
-          <p className="text-gray-text text-base md:text-lg max-w-2xl">
+          <p className="text-gray-600 dark:text-gray-300 text-base md:text-lg max-w-2xl">
             Everything you need for financial peace of mind, powered by AI and trust.
           </p>
         </div>
 
         {/* Services Grid - 2x2 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {services.map((service, index) => {
-            const colors = colorMap[service.color as keyof typeof colorMap]
-            return (
-              <div
-                key={index}
-                className="card group cursor-pointer"
-              >
+          {services.map((service, index) => (
+            <Link key={index} href={service.link}>
+              <div className="h-full p-6 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:border-primary/30 transition-all group cursor-pointer">
                 {/* Icon */}
-                <div className={`${colors.bg} w-14 h-14 rounded-lg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
-                  <div className={colors.icon}>
-                    {service.icon}
-                  </div>
+                <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-primary">
+                  {service.icon}
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-semibold text-navy mb-2">
+                <h3 className="text-xl font-bold text-navy dark:text-white mb-2">
                   {service.title}
                 </h3>
-                <p className="text-gray-text text-sm mb-4 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
                   {service.description}
                 </p>
 
@@ -85,11 +77,7 @@ export default function ServicesGrid() {
                     {service.badges.map((badge, i) => (
                       <span
                         key={i}
-                        className={`text-xs font-medium px-3 py-1 rounded-full ${
-                          i === 0 ? 'badge badge-primary' :
-                          i === 1 ? 'badge badge-blue' :
-                          'badge badge-orange'
-                        }`}
+                        className="text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary dark:bg-primary/20"
                       >
                         {badge}
                       </span>
@@ -98,13 +86,13 @@ export default function ServicesGrid() {
                 )}
 
                 {/* CTA */}
-                <button className={`inline-flex items-center gap-2 text-sm font-medium ${colors.text} group-hover:gap-3 transition-all`}>
+                <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
                   {service.cta}
                   <ArrowRight className="h-4 w-4" strokeWidth={2} />
-                </button>
+                </div>
               </div>
-            )
-          })}
+            </Link>
+          ))}
         </div>
       </div>
     </section>
