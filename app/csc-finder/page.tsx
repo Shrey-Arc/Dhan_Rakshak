@@ -3,13 +3,14 @@
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { MapPin, Clock, Phone } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api, LocationItem } from '@/lib/api'
 
 export default function CSCFinderPage() {
   const [searchLocation, setSearchLocation] = useState('')
   const [selectedType, setSelectedType] = useState('all')
 
-  const centers = [
+  const localCenters = [
     {
       id: 1,
       name: 'Ram Nagar CSC',
@@ -56,11 +57,18 @@ export default function CSCFinderPage() {
     }
   ]
 
-  const filtered = centers.filter(c => {
-    const typeMatch = selectedType === 'all' || c.type === selectedType
-    const locationMatch = searchLocation === '' || c.location.toLowerCase().includes(searchLocation.toLowerCase())
-    return typeMatch && locationMatch
-  })
+  const [filtered, setFiltered] = useState<LocationItem[]>([])
+
+  useEffect(() => {
+    api.getLocations(searchLocation, selectedType).then((res) => setFiltered(res.items)).catch(() => {
+      const fallback = localCenters.filter((c) => {
+        const typeMatch = selectedType === 'all' || c.type === selectedType
+        const locationMatch = searchLocation === '' || c.location.toLowerCase().includes(searchLocation.toLowerCase())
+        return typeMatch && locationMatch
+      })
+      setFiltered(fallback.map((c) => ({ ...c, id: String(c.id) })))
+    })
+  }, [searchLocation, selectedType])
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">

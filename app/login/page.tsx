@@ -7,6 +7,10 @@ import { useState } from 'react'
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loginMethod, setLoginMethod] = useState('email')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [phone, setPhone] = useState('')
+  const [status, setStatus] = useState('')
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-50 dark:from-slate-950 dark:to-slate-900 px-4">
@@ -56,7 +60,22 @@ export default function LoginPage() {
 
           {/* Email Login */}
           {loginMethod === 'email' && (
-            <form className="space-y-4">
+            <form
+              className="space-y-4"
+              onSubmit={async (e) => {
+                e.preventDefault()
+                try {
+                  await fetch(`${process.env.NEXT_PUBLIC_BFF_BASE_URL || 'http://localhost:8000/api/v1'}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                  })
+                  setStatus('Logged in successfully (demo).')
+                } catch {
+                  setStatus('Login failed. Please check backend service.')
+                }
+              }}
+            >
               <div>
                 <label className="block text-sm font-semibold text-navy dark:text-white mb-2">Email Address</label>
                 <div className="relative">
@@ -64,6 +83,8 @@ export default function LoginPage() {
                   <input
                     type="email"
                     placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary"
                   />
                 </div>
@@ -76,6 +97,8 @@ export default function LoginPage() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary"
                   />
                   <button
@@ -101,12 +124,25 @@ export default function LoginPage() {
               <button className="w-full py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold hover:shadow-lg transition-all">
                 Sign In
               </button>
+              {status && <p className="text-sm text-gray-600 dark:text-gray-300">{status}</p>}
             </form>
           )}
 
           {/* Phone Login */}
           {loginMethod === 'phone' && (
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={async (e) => {
+              e.preventDefault()
+              try {
+                await fetch(`${process.env.NEXT_PUBLIC_BFF_BASE_URL || 'http://localhost:8000/api/v1'}/auth/login/otp/send`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ phone }),
+                })
+                setStatus('OTP sent (demo).')
+              } catch {
+                setStatus('Could not send OTP.')
+              }
+            }}>
               <div>
                 <label className="block text-sm font-semibold text-navy dark:text-white mb-2">Phone Number</label>
                 <div className="relative">
@@ -114,6 +150,8 @@ export default function LoginPage() {
                   <input
                     type="tel"
                     placeholder="9876543210"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary"
                   />
                 </div>
@@ -122,6 +160,7 @@ export default function LoginPage() {
               <button className="w-full py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold hover:shadow-lg transition-all">
                 Send OTP
               </button>
+              {status && <p className="text-sm text-gray-600 dark:text-gray-300">{status}</p>}
             </form>
           )}
 

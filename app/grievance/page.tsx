@@ -3,12 +3,20 @@
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { AlertCircle, MessageSquare, ArrowRight } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api, GrievanceItem } from '@/lib/api'
 
 export default function GrievancePage() {
   const [view, setView] = useState('log')
+  const [formData, setFormData] = useState({
+    category: 'Taxation',
+    priority: 'Low',
+    title: '',
+    description: '',
+  })
+  const [submitState, setSubmitState] = useState('')
 
-  const myGrievances = [
+  const localGrievances = [
     {
       id: 'GRV001',
       title: 'Incorrect Tax Assessment',
@@ -101,7 +109,11 @@ export default function GrievancePage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-navy dark:text-white mb-2">Category</label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-navy dark:text-white focus:outline-none focus:border-primary">
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-navy dark:text-white focus:outline-none focus:border-primary"
+                  >
                     <option>Taxation</option>
                     <option>Banking</option>
                     <option>Schemes</option>
@@ -111,7 +123,11 @@ export default function GrievancePage() {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-navy dark:text-white mb-2">Priority</label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-navy dark:text-white focus:outline-none focus:border-primary">
+                  <select
+                    value={formData.priority}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, priority: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-navy dark:text-white focus:outline-none focus:border-primary"
+                  >
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
@@ -125,6 +141,8 @@ export default function GrievancePage() {
                 <input
                   type="text"
                   placeholder="Brief title of your grievance"
+                  value={formData.title}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary"
                 />
               </div>
@@ -134,6 +152,8 @@ export default function GrievancePage() {
                 <textarea
                   placeholder="Provide detailed information about your grievance"
                   rows={6}
+                  value={formData.description}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary resize-none"
                 />
               </div>
@@ -146,10 +166,27 @@ export default function GrievancePage() {
                 </div>
               </div>
 
-              <button className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2">
+              <button
+                onClick={async () => {
+                  if (!formData.title || !formData.description) {
+                    setSubmitState('Please fill in title and description.')
+                    return
+                  }
+                  try {
+                    const created = await api.createGrievance(formData)
+                    setMyGrievances((prev) => [created, ...prev])
+                    setSubmitState(`Grievance ${created.id} created successfully.`)
+                    setFormData((prev) => ({ ...prev, title: '', description: '' }))
+                  } catch {
+                    setSubmitState('Could not submit grievance right now.')
+                  }
+                }}
+                className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              >
                 Submit Grievance
                 <ArrowRight className="h-4 w-4" />
               </button>
+              {submitState && <p className="text-sm text-gray-600 dark:text-gray-300">{submitState}</p>}
             </section>
           )}
 

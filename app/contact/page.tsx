@@ -4,6 +4,7 @@ import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { Mail, Phone, MapPin, MessageSquare, Linkedin, MessageCircle } from 'lucide-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { api } from '@/lib/api'
 
 type ContactIntent = 'worry' | 'appreciation'
 
@@ -14,6 +15,7 @@ export default function ContactPage() {
     email: '',
     message: '',
   })
+  const [submitMessage, setSubmitMessage] = useState('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -22,7 +24,14 @@ export default function ContactPage() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Form submitted:', { ...formData, type: contactIntent })
+    api
+      .contact({ ...formData, type: contactIntent })
+      .then((res) => {
+        setSubmitMessage(`Message submitted successfully. Ticket: ${res.ticket_id}`)
+      })
+      .catch(() => {
+        setSubmitMessage('Could not submit message right now. Please try again later.')
+      })
   }
 
   const directLinks = [
@@ -130,6 +139,7 @@ export default function ContactPage() {
                 <button className="w-full rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark">
                   Submit Message
                 </button>
+                {submitMessage && <p className="text-sm text-gray-600 dark:text-gray-300">{submitMessage}</p>}
               </form>
             </div>
 
