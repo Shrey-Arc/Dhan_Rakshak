@@ -65,6 +65,19 @@ export interface SpotlightItem {
   tag: string
 }
 
+export interface AuthUser {
+  id: string
+  name: string
+  email: string
+}
+
+export interface AuthResponse {
+  access_token: string
+  refresh_token: string
+  token_type: string
+  user: AuthUser
+}
+
 export const api = {
   queryAI: (query: string) => request<{ answer: string; intent: string; suggested_actions: string[]; confidence: number }>('/ai/query', {
     method: 'POST',
@@ -81,6 +94,15 @@ export const api = {
   getSpotlight: () => request<APIListResponse<SpotlightItem>>('/content/spotlight'),
   contact: (payload: { name: string; email: string; message: string; type: string }) => request<{ status: string; ticket_id: string }>('/contact', {
     method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  signup: (payload: { name: string; email: string; password: string }) => request<AuthUser>('/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  login: (payload: { email: string; password: string }) => request<AuthResponse>('/auth/login', {
+    method: 'POST',
+    credentials: 'include',
     body: JSON.stringify(payload),
   }),
 }
