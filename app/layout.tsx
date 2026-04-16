@@ -38,12 +38,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="bg-white scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className="bg-white scroll-smooth dark:bg-slate-950" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="antialiased font-sans text-navy bg-white">
+      <body className="antialiased font-sans text-navy bg-white dark:bg-slate-950 dark:text-gray-200">
         {children}
       </body>
     </html>
