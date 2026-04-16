@@ -3,7 +3,7 @@
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { Mail, Phone, MapPin, MessageSquare } from 'lucide-react'
-import { useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -13,12 +13,12 @@ export default function ContactPage() {
     message: ''
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('Form submitted:', formData)
     // Add submission logic here
