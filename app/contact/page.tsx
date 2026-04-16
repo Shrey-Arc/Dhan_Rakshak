@@ -2,7 +2,7 @@
 
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
-import { Mail, Phone, MapPin, MessageSquare, Clock } from 'lucide-react'
+import { Mail, Phone, MapPin, MessageSquare } from 'lucide-react'
 import { useState } from 'react'
 
 export default function ContactPage() {
