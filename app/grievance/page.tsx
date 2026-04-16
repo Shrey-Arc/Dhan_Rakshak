@@ -2,7 +2,7 @@
 
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
-import { AlertCircle, CheckCircle, Clock, MessageSquare, ArrowRight } from 'lucide-react'
+import { AlertCircle, MessageSquare, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 
 export default function GrievancePage() {
@@ -38,7 +38,7 @@ export default function GrievancePage() {
     }
   ]
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'In Progress':
         return 'bg-blue-100/50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'

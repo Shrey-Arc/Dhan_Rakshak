@@ -3,7 +3,6 @@
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { FileText, CheckCircle, ArrowRight, Upload, Calculator, MessageSquare } from 'lucide-react'
-import Link from 'next/link'
 
 export default function TaxHelpPage() {
   const steps = [
