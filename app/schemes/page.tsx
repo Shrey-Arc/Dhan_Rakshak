@@ -3,13 +3,13 @@
 import FloatingNavbar from '@/components/FloatingNavbar'
 import Footer from '@/components/Footer'
 import { TrendingUp, Zap, Target, Users, Award, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api, Scheme } from '@/lib/api'
 
 export default function SchemesPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
 
-  const schemes = [
+  const localSchemes = [
     {
       id: 1,
       name: 'PM-KISAN',
@@ -75,9 +75,23 @@ export default function SchemesPage() {
     { id: 'insurance', name: 'Insurance' }
   ]
 
-  const filtered = selectedCategory === 'all' 
-    ? schemes 
-    : schemes.filter(s => s.category === selectedCategory)
+  const [schemes, setSchemes] = useState<Scheme[]>([])
+
+  useEffect(() => {
+    api.getSchemes(selectedCategory).then((res) => setSchemes(res.items)).catch(() => {
+      const fallback = selectedCategory === 'all' ? localSchemes : localSchemes.filter((s) => s.category === selectedCategory)
+      setSchemes(
+        fallback.map((s) => ({
+          id: String(s.id),
+          name: s.name,
+          category: s.category,
+          description: s.description,
+          benefit: s.benefit,
+          eligible: s.eligible,
+        })),
+      )
+    })
+  }, [selectedCategory])
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
@@ -119,14 +133,14 @@ export default function SchemesPage() {
 
           {/* Schemes Grid */}
           <section className="grid md:grid-cols-2 gap-6">
-            {filtered.map((scheme) => (
+            {schemes.map((scheme) => (
               <div
                 key={scheme.id}
                 className="p-6 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:border-primary/30 transition-all group"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 flex items-center justify-center text-primary">
-                    {scheme.icon}
+                    {localSchemes.find((s) => String(s.id) === String(scheme.id))?.icon ?? <Zap className="h-6 w-6" />}
                   </div>
                   <span className="text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary dark:bg-primary/20">
                     {scheme.category}

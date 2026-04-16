@@ -1,107 +1,94 @@
 'use client'
 
 import { Search, Sparkles } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/api'
+
+const hints = [
+  'How do I file my income tax?',
+  'Which government schemes am I eligible for?',
+  'Where is my nearest CSC center?',
+]
 
 export default function HeroSection() {
   const [searchValue, setSearchValue] = useState('')
+  const [hintIndex, setHintIndex] = useState(0)
+  const [aiResponse, setAiResponse] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const suggestions = [
-    'How to file ITR?',
-    'PM-KISAN eligibility',
-    'Bank loan options',
-    'Tax deductions',
-  ]
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHintIndex((prev) => (prev + 1) % hints.length)
+    }, 3000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   return (
-    <section className="pt-32 pb-20 px-4 md:px-8 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        {/* Background Gradient with Neomorphism */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900" />
-        
-        {/* Liquid Crystal decorative elements */}
-        <div className="absolute top-20 right-0 w-96 h-96 bg-gradient-to-br from-green-200/20 to-blue-200/20 dark:from-green-900/10 dark:to-blue-900/10 rounded-full blur-3xl -z-10" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-200/20 to-green-200/20 dark:from-blue-900/10 dark:to-green-900/10 rounded-full blur-3xl -z-10" />
+    <section className="relative overflow-hidden bg-[linear-gradient(135deg,#00B386_0%,#2563EB_100%)] px-4 pb-24 pt-36 md:px-8 md:pt-40">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.22),transparent_45%)]" />
+      <div className="absolute -left-24 top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+      <div className="absolute -bottom-12 right-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
-        {/* Main Content */}
-        <div className="text-center space-y-8">
-          {/* Logo/Brand */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center shadow-lg shadow-green-200/50 dark:shadow-green-900/20">
-              <span className="text-white font-bold text-lg">DR</span>
+      <div className="relative mx-auto max-w-6xl text-center text-white">
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-xs font-semibold backdrop-blur-sm md:text-sm">
+          <Sparkles className="h-4 w-4" /> AI-powered financial guidance for every village
+        </div>
+
+        <h1 className="mx-auto max-w-4xl text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+          Your AI Financial Guardian
+        </h1>
+        <p className="mx-auto mt-4 max-w-3xl text-base text-white/90 md:text-lg">
+          Get trusted help for taxes, government schemes, CSC services, and grievance tracking in one simple place.
+        </p>
+
+        <div className="mx-auto mt-10 w-full max-w-4xl">
+          <div className="group relative rounded-full bg-white/20 p-1 shadow-[0_12px_30px_rgba(0,0,0,0.2)] backdrop-blur-md">
+            <div className="relative flex h-14 items-center rounded-full bg-white pl-5 pr-2 text-left transition group-focus-within:shadow-[0_0_0_6px_rgba(255,255,255,.35)]">
+              <Search className="h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder="Ask anything about tax, schemes, CSC..."
+                className="h-full flex-1 border-none bg-transparent px-3 text-sm text-navy focus:outline-none md:text-base"
+                aria-label="Ask DhanRakshak AI"
+              />
+              <button
+                onClick={async () => {
+                  if (!searchValue.trim()) return
+                  try {
+                    setLoading(true)
+                    const data = await api.queryAI(searchValue)
+                    setAiResponse(data.answer)
+                  } catch {
+                    setAiResponse('AI backend unavailable. Please try again shortly.')
+                  } finally {
+                    setLoading(false)
+                  }
+                }}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-dark md:px-5"
+              >
+                <Sparkles className="h-4 w-4" /> Ask AI
+              </button>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-green-600 bg-clip-text text-transparent dark:from-green-400 dark:via-blue-400 dark:to-green-400">
-              DhanRakshak
-            </h1>
           </div>
 
-          {/* Tagline */}
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Your AI Financial Guardian
+          <p className="mt-3 text-sm text-white/85">
+            Try: <span className="font-medium">{hints[hintIndex]}</span>
+            <span className="ml-1 inline-block h-4 w-0.5 animate-pulse bg-white/90 align-middle" />
           </p>
+          {(loading || aiResponse) && (
+            <p className="mt-3 rounded-lg bg-white/15 px-4 py-2 text-left text-sm text-white/95">
+              {loading ? 'Thinking…' : aiResponse}
+            </p>
+          )}
+        </div>
 
-          {/* Subheading */}
-          <p className="text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
-            Expert guidance on taxes, government schemes, banking, and more. Trusted by rural communities across India.
-          </p>
-
-          {/* Search Bar with Neomorphism */}
-          <div className="mt-10 space-y-4">
-            <div className="relative max-w-2xl mx-auto">
-              {/* Neomorphic Shadow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-green-200/30 to-blue-200/30 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl blur" />
-              
-              <div className="relative flex items-center bg-white dark:bg-slate-800 rounded-2xl border-2 border-gray-200 dark:border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <Search className="absolute left-4 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Ask anything about tax, subsidies, or banking..."
-                  className="flex-1 pl-12 pr-4 py-4 bg-transparent focus:outline-none text-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-base"
-                />
-                <button className="mr-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-500 text-white font-medium hover:shadow-lg transition-all flex items-center gap-2">
-                  <Sparkles className="h-4 w-4" />
-                  <span className="hidden md:inline">Ask AI</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Suggestions */}
-            <div className="flex flex-wrap justify-center gap-2 mt-6">
-              {suggestions.map((suggestion, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSearchValue(suggestion)}
-                  className="px-4 py-2 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm text-gray-600 dark:text-gray-300 hover:border-primary hover:text-primary transition-all duration-300 shadow-sm hover:shadow-md"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="flex justify-center gap-6 pt-8 flex-wrap">
-            <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-              <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 font-bold">
-                ✓
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">Bank-Level Security</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-              <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
-                ✓
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">AI-Powered Guidance</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
-              <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 font-bold">
-                ✓
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-300">100% Free</span>
-            </div>
-          </div>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm">
+          <span className="rounded-full border border-white/35 bg-white/15 px-4 py-2">Bank-Level Security</span>
+          <span className="rounded-full border border-white/35 bg-white/15 px-4 py-2">AI-Powered</span>
+          <span className="rounded-full border border-white/35 bg-white/15 px-4 py-2">100% Free Guidance</span>
         </div>
       </div>
     </section>

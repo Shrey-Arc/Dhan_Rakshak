@@ -2,9 +2,10 @@
 
 import { Pause, Play } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { api } from '@/lib/api'
 
 interface NewsItem {
-  id: number
+  id: number | string
   title: string
   source: string
   time: string
@@ -16,7 +17,7 @@ export default function Spotlight() {
   const [isPlaying, setIsPlaying] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
 
-  const news: NewsItem[] = [
+  const fallbackNews: NewsItem[] = [
     {
       id: 1,
       title: 'PM-KISAN 17th Installment Released - Check Your Account',
@@ -46,6 +47,14 @@ export default function Spotlight() {
       tag: 'Scheme Update',
     },
   ]
+
+  const [news, setNews] = useState<NewsItem[]>(fallbackNews)
+
+  useEffect(() => {
+    api.getSpotlight().then((res) => {
+      if (res.items.length > 0) setNews(res.items)
+    }).catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (!isPlaying || isHovered) return

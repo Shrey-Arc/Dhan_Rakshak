@@ -1,7 +1,8 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/api'
 
 interface FAQItem {
   id: string
@@ -12,7 +13,7 @@ interface FAQItem {
 export default function FAQ() {
   const [openId, setOpenId] = useState<string | null>(null)
 
-  const faqs: FAQItem[] = [
+  const fallbackFaqs: FAQItem[] = [
     {
       id: 'faq-1',
       question: 'How do I get started with DhanRakshak?',
@@ -50,6 +51,14 @@ export default function FAQ() {
         'Yes, we offer 24/7 AI-powered support in multiple languages. For complex issues, reach our human team via WhatsApp, email, or phone support.',
     },
   ]
+
+  const [faqs, setFaqs] = useState<FAQItem[]>(fallbackFaqs)
+
+  useEffect(() => {
+    api.getFaqs().then((res) => {
+      if (res.items.length > 0) setFaqs(res.items)
+    }).catch(() => {})
+  }, [])
 
   return (
     <section className="section-padding bg-white">
