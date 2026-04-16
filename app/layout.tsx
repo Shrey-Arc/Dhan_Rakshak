@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { ThemeProvider } from '@/contexts/ThemeContext'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -39,13 +38,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="bg-white scroll-smooth dark:bg-slate-950" suppressHydrationWarning>
+    <html lang="en" className="bg-white scroll-smooth" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="antialiased font-sans text-navy bg-white dark:bg-slate-950 dark:text-gray-200">
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="antialiased font-sans text-navy bg-white">
+        {children}
       </body>
     </html>
   )
