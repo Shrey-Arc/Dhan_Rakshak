@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Primary Colors - Fintech Grade */
+  --color-primary: 167 100% 38%; /* Deep Green #00B386 */
+  --color-primary-dark: 167 100% 32%; /* Darker green for hover */
+  --color-navy: 221 93% 9%; /* Dark Navy #0F172A */
+  --color-background: 0 0% 100%; /* White */
+
+  /* Secondary Colors */
+  --color-gray-light: 210 14% 97%; /* Light Gray #F5F7FA */
+  --color-gray-border: 210 9% 90%; /* Border Gray #E5E7EB */
+  --color-gray-text: 210 10% 42%; /* Muted Text #6B7280 */
+
+  /* Accent Colors */
+  --color-blue: 217 91% 60%; /* Blue #2563EB */
+  --color-orange: 38 92% 50%; /* Orange #F59E0B */
+  --color-red: 0 84% 60%; /* Red #EF4444 */
+
+  /* Semantic */
+  --color-foreground: 221 93% 9%; /* Navy - text */
+  --color-foreground-light: 210 10% 42%; /* Muted text */
+  --color-border: 210 9% 90%; /* Border */
+  --color-muted: 210 14% 97%; /* Light background */
+
+  /* Spacing - 8px base unit */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  --spacing-4xl: 6rem;
+  --spacing-5xl: 8rem;
+
+  /* Radius */
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 9999px;
+}
+
+/* Base Typography */
+html {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--color-background));
+  color: hsl(var(--color-foreground));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: hsl(var(--color-navy));
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.3px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  letter-spacing: -0.2px;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  color: hsl(var(--color-foreground-light));
+  font-size: 1rem;
+}
+
+/* Buttons */
+button {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Links */
+a {
+  color: hsl(var(--color-primary));
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: hsl(var(--color-primary-dark));
+}
+
+/* Input Elements */
+input, textarea, select {
+  font-family: var(--font-sans);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: hsl(var(--color-primary));
+  box-shadow: 0 0 0 3px hsl(var(--color-primary) / 0.1);
+}
+
+/* Utility Classes */
+.text-navy {
+  color: hsl(var(--color-navy));
+}
+
+.text-primary {
+  color: hsl(var(--color-primary));
+}
+
+.text-muted {
+  color: hsl(var(--color-gray-text));
+}
+
+.bg-primary {
+  background-color: hsl(var(--color-primary));
+}
+
+.bg-navy {
+  background-color: hsl(var(--color-navy));
+}
+
+.bg-light {
+  background-color: hsl(var(--color-gray-light));
+}
+
+.border-subtle {
+  border-color: hsl(var(--color-gray-border));
+}
+
+/* Container */
+.container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.875rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  .container-custom {
+    padding: 0 1rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-in-out;
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-in-out;
+}
+
+/* Liquid Crystal & Neomorphic Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 179, 134, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 179, 134, 0.6);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Glass Morphism Effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.dark .glass-morphism {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Neomorphic Shadow */
+.neomorphic {
+  box-shadow: 
+    8px 8px 16px rgba(0, 0, 0, 0.08),
+    -8px -8px 16px rgba(255, 255, 255, 0.5);
+}
+
+.dark .neomorphic {
+  box-shadow: 
+    8px 8px 16px rgba(0, 0, 0, 0.3),
+    -8px -8px 16px rgba(255, 255, 255, 0.05);
+}
+
+/* Smooth Transitions for Dark Mode */
+* {
+  @apply transition-colors duration-300;
+}
+
+/* Dark Mode Support */
+.dark {
+  color-scheme: dark;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--color-gray-light));
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--color-navy) / 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--color-primary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--color-primary-dark));
+}
+
