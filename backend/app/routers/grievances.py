@@ -1,32 +1,30 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from .. import store
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from ..core.database import get_db
+from ..repos.repositories import GrievanceRepo
 
 router = APIRouter()
 
 
 class GrievanceCreateRequest(BaseModel):
-    title: str
-    category: str
-    priority: str
-    description: str
+    title: str = Field(min_length=5, max_length=255)
+    category: str = Field(min_length=3, max_length=80)
+    priority: str = Field(min_length=3, max_length=40)
+    description: str = Field(min_length=10, max_length=2000)
 
 
 @router.get('')
-def list_grievances():
-    return {'items': store.grievances}
+def list_grievances(db: Session = Depends(get_db)):
+    return {'items': GrievanceRepo(db).list()}
 
 
 @router.post('')
-def create_grievance(payload: GrievanceCreateRequest):
-    item = {
-        'id': store.new_grievance_id(),
-        'title': payload.title,
-        'category': payload.category,
-        'status': 'Pending Review',
-        'date': store.now_iso()[:10],
-        'priority': payload.priority,
-        'description': payload.description,
-    }
-    store.grievances.append(item)
-    return item
+def create_grievance(payload: GrievanceCreateRequest, db: Session = Depends(get_db)):
+    return GrievanceRepo(db).create(
+        title=payload.title,
+        category=payload.category,
+        priority=payload.priority,
+        description=payload.description,
+    )

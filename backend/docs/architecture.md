@@ -1,26 +1,33 @@
 # DhanRakshak Architecture (BFF-first)
 
 ## Layers
+1. Next.js frontend (web)
+2. FastAPI BFF
+3. SQL database (Postgres/Supabase compatible)
+4. External APIs (LLM, Google Maps)
 
-1. Frontend (Next.js web)
-2. BFF (FastAPI REST layer)
-3. Data services (PostgreSQL / MongoDB / Supabase optional)
-4. External APIs (LLM provider, Google Maps)
+## Security controls added
+- Password hashing via bcrypt
+- JWT access + refresh tokens
+- HttpOnly cookie for refresh token
+- Route-level validation with Pydantic
+- Restricted CORS allowlist
+- Global rate limiting middleware
+- Request audit logging middleware
 
-## Data flow
+## Operational controls
+- `/health` liveness endpoint
+- `/ready` readiness endpoint with DB check
+- migration file: `migrations/001_init.sql`
+- seed script: `scripts/seed.py`
+- tests: `tests/`
 
-- UI calls BFF (`/api/v1/*`)
-- BFF handles auth, validation, orchestration, and response shaping
-- BFF calls DB + external APIs (LLM / Maps) as needed
-- BFF returns normalized payloads optimized for frontend rendering
-
-## Module responsibilities
-
-- Auth: session/token workflows
-- AI: query routing, prompt orchestration, safety layer
-- Tax: tax session orchestration and deductions guidance
-- Schemes: listing + eligibility matching
-- Locations: CSC/Bank finder and map enrichment
-- Grievances: complaint lifecycle and status tracking
-- Content: FAQ + Spotlight feeds
-- Contact: support ticket intake
+## Repositories
+- UserRepo
+- RefreshTokenRepo
+- SchemeRepo
+- LocationRepo
+- GrievanceRepo
+- ContentRepo
+- ContactRepo
+- AuditRepo

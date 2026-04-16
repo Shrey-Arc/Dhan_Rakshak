@@ -8,7 +8,11 @@
 - `backend/` FastAPI BFF service
   - `app/main.py` API app entry
   - `app/routers/*` modular route handlers
+  - `app/repos/repositories.py` DB-backed repositories
+  - `app/middleware/*` rate-limit + audit logging
   - `db/schema.sql` baseline relational schema
+  - `migrations/001_init.sql` SQL migration
+  - `scripts/seed.py` seed strategy
   - `docs/architecture.md` architecture notes
 
 ## 2) Implemented BFF endpoints
@@ -94,11 +98,11 @@ uvicorn app.main:app --reload --port 8000
 NEXT_PUBLIC_BFF_BASE_URL=http://localhost:8000/api/v1
 ```
 
-## 7) Production hardening checklist
+## 7) Hardening status
 
-- Replace in-memory store with DB repository layer.
-- Add JWT validation middleware.
-- Add RBAC for grievance/admin routes.
-- Add rate-limiting for auth/ai endpoints.
-- Add structured logging + tracing.
-- Add CI tests for routers and frontend API client.
+- ✅ DB-backed repository layer added.
+- ✅ JWT auth (access/refresh) + password hashing added.
+- ✅ Rate-limiting + audit logging middleware added.
+- ✅ Migration + seed strategy added.
+- ✅ API smoke/integration tests added under `backend/tests`.
+- ⏳ Next: RBAC, distributed rate-limiter (Redis), observability export, and CI pipeline wiring.

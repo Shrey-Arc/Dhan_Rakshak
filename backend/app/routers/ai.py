@@ -1,11 +1,11 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 router = APIRouter()
 
 
 class AIQueryRequest(BaseModel):
-    query: str
+    query: str = Field(min_length=2, max_length=500)
     locale: str | None = 'en-IN'
 
 

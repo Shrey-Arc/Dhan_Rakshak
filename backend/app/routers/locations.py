@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Query
-from .. import store
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.orm import Session
+
+from ..core.database import get_db
+from ..repos.repositories import LocationRepo
 
 router = APIRouter()
 
 
 @router.get('/nearby')
-def nearby_locations(type: str | None = Query(default=None), q: str | None = Query(default=None)):
-    items = store.locations
-    if type and type != 'all':
-        items = [i for i in items if i['type'] == type]
-    if q:
-        q2 = q.lower()
-        items = [i for i in items if q2 in i['location'].lower() or q2 in i['name'].lower()]
-    return {'items': items}
+def nearby_locations(
+    type: str | None = Query(default=None),
+    q: str | None = Query(default=None),
+    db: Session = Depends(get_db),
+):
+    return {'items': LocationRepo(db).list(q=q, type_=type)}

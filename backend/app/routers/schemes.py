@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Query
-from .. import store
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.orm import Session
+
+from ..core.database import get_db
+from ..repos.repositories import SchemeRepo
 
 router = APIRouter()
 
 
 @router.get('')
-def list_schemes(category: str | None = Query(default=None)):
-    if not category or category == 'all':
-        return {'items': store.schemes}
-    return {'items': [s for s in store.schemes if s['category'] == category]}
+def list_schemes(category: str | None = Query(default=None), db: Session = Depends(get_db)):
+    return {'items': SchemeRepo(db).list(category)}
 
 
 @router.post('/match')
-def match_schemes(profile: dict):
-    return {'matched': store.schemes, 'profile': profile}
+def match_schemes(profile: dict, db: Session = Depends(get_db)):
+    return {'matched': SchemeRepo(db).list(None), 'profile': profile}
